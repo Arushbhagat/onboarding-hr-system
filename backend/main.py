@@ -21,7 +21,10 @@ db.tasks.create_index([("assignee", ASCENDING), ("status", ASCENDING)])
 db.audit.create_index([("employee_id", ASCENDING), ("at", -1)])
 
 app = FastAPI(title="Employee Onboarding & HR Workflow API")
-app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173")
+app.add_middleware(CORSMiddleware,
+                   allow_origins=[FRONTEND_URL, "http://localhost:5173"],
+                   allow_methods=["*"], allow_headers=["*"])
 oauth2 = OAuth2PasswordBearer(tokenUrl="auth/login")
 
 # ---------- Pydantic schemas ----------
